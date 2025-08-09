@@ -1,0 +1,4 @@
+name: SWorldEdit
+main: ru.SocialMoods.SWorldEdit.SWorldEdit
+version: 1.0.0
+api: 1.0.0

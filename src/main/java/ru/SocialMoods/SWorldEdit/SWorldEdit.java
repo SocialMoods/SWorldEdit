@@ -4,15 +4,22 @@ import cn.nukkit.plugin.PluginBase;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ru.SocialMoods.SWorldEdit.commands.*;
 import ru.SocialMoods.SWorldEdit.commands.geometry.*;
+import ru.SocialMoods.SWorldEdit.repository.SchematicRepository;
+import ru.SocialMoods.SWorldEdit.repository.impl.SchematicRepositoryImpl;
+import ru.SocialMoods.SWorldEdit.service.SchematicService;
+import ru.SocialMoods.SWorldEdit.service.impl.SchematicServiceImpl;
 
 @Slf4j
 public class SWorldEdit extends PluginBase {
 
     private final Map<String, PlayerData> players = new HashMap<>();
     private static SWorldEdit instance;
+    @Getter private SchematicRepository schematicRepository;
+    @Getter private SchematicService schematicService;
 
     @Override
     public void onEnable() {
@@ -20,6 +27,9 @@ public class SWorldEdit extends PluginBase {
 
         try {
             this.getServer().getPluginManager().registerEvents(new Listener(), this);
+
+            schematicRepository = new SchematicRepositoryImpl(getDataFolder());
+            schematicService = new SchematicServiceImpl(schematicRepository);
 
             registerCommands();
 
@@ -58,6 +68,7 @@ public class SWorldEdit extends PluginBase {
             this.getServer().getCommandMap().register("worldedit", new HCylCommand());
             this.getServer().getCommandMap().register("worldedit", new SphereCommand());
             this.getServer().getCommandMap().register("worldedit", new HSphereCommand());
+            this.getServer().getCommandMap().register("worldedit", new SchematicCommand(schematicService));
         } catch (Exception e) {
             this.getLogger().error("Error registering commands: " + e.getMessage());
         }

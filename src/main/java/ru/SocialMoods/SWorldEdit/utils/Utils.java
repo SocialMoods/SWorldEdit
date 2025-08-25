@@ -45,6 +45,10 @@ public class Utils {
             return null;
         }
 
+        if (str.matches("^-?\\d+(?::-?\\d+)?$")) {
+            return parseWithIdDataFormat(str, player);
+        }
+
         if (blockTypesAvailable) {
             Block block = parseWithBlockTypes(str, player);
             if (block != null) {

@@ -1,10 +1,10 @@
 package ru.SocialMoods.SWorldEdit.utils;
 
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockLightBlock;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
-import cn.nukkit.scheduler.AsyncTask;
 import ru.SocialMoods.SWorldEdit.PlayerData;
 import ru.SocialMoods.SWorldEdit.SWorldEdit;
 import ru.SocialMoods.SWorldEdit.task.BlockOperationTask;
@@ -387,11 +387,24 @@ public class WorldUtils {
                 for (int x = minX; x <= maxX; x++) {
                     for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
-                            if (level.getBlockIdAt(x, y, z) != original.getId() ||
-                                    level.getBlockDataAt(x, y, z) != original.getDamage()) continue;
-
                             v.setComponents(x, y, z);
-                            undo.blocks.add(level.getBlock(v));
+                            Block currentBlock = level.getBlock(v);
+
+                            // better BlockLightBlock removal
+                            if (currentBlock instanceof BlockLightBlock) {
+                                undo.blocks.add(currentBlock);
+                                level.setBlock(v, replacement, true, false);
+                                blocks.incrementAndGet();
+                                continue;
+                            }
+
+                            if (original != null &&
+                                    (level.getBlockIdAt(x, y, z) != original.getId() ||
+                                            level.getBlockDataAt(x, y, z) != original.getDamage())) {
+                                continue;
+                            }
+
+                            undo.blocks.add(currentBlock);
                             level.setBlock(v, replacement, true, false);
                             blocks.incrementAndGet();
                         }

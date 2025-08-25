@@ -2,7 +2,6 @@ package ru.SocialMoods.SWorldEdit.task;
 
 import cn.nukkit.scheduler.AsyncTask;
 
-@SuppressWarnings("unused")
 public class BlockOperationTask extends AsyncTask {
     private final Runnable operation;
     private volatile boolean completed = false;

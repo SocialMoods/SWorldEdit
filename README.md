@@ -40,7 +40,7 @@ SWorldEdit is a powerful world editing plugin for Nukkit servers that provides e
 ### Schematics
 
 - `//schem save <name>` - Save the current selection as a schematic  
-- `//schem load <name> [x y z]` - Load a schematic at player's position or at specified coordinates  
+- `//schem load <name>` - Load a schematic at player's position or at specified coordinates  
 
 Schematics are stored in **compressed NBT format** for maximum efficiency. This allows saving large structures in a compact way and reusing them easily.
 
